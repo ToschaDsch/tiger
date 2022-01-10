@@ -9,12 +9,17 @@ pygame.display.set_icon(pygame.image.load("ico.bmp"))
 clock = pygame.time.Clock()
 
 # constant
+H = 400
+W = 600
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 FPS = 60  # FPS
 PI = 3.14
+"""
+LESSON 2
+**************************************************************************************************************
 
 pygame.draw.rect(sc, BLUE, (10, 10, 50, 100), 2)
 
@@ -32,11 +37,35 @@ pygame.draw.circle(sc, BLUE, (300, 250), 40)
 pygame.draw.ellipse(sc, RED, (300, 300, 100, 50), 1)
 
 pygame.draw.arc(sc, RED, (450, 30, 50, 150), PI, 2+PI, 5)
-
-pygame.display.flip()
+"""
+x = W // 2
+y = H //2
+speed = 5
 
 while True:  # the main cycle
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_LEFT]:
+        x -= speed
+    elif keys[pygame.K_RIGHT]:
+        x += speed
+    elif keys[pygame.K_UP]:
+        y -= speed
+    elif keys[pygame.K_DOWN]:
+        y += speed
+        '''Variation
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                x -= speed
+            elif event.key == pygame.K_RIGHT:
+                x += speed
+        '''
+    sc.fill(WHITE)
+    pygame.draw.rect(sc, BLUE, (x, y, 10, 20))
+
+    pygame.display.flip()
+
     clock.tick(FPS)
