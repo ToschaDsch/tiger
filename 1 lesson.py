@@ -42,6 +42,8 @@ x = W // 2
 y = H //2
 speed = 5
 
+sp = None
+
 while True:  # the main cycle
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
