@@ -65,9 +65,19 @@ while True:  # the main cycle
             elif event.key == pygame.K_RIGHT:
                 x += speed
         '''
-    sc.fill(WHITE)
-    pygame.draw.rect(sc, BLUE, (x, y, 10, 20))
+    pressed = pygame.mouse.get_pressed()
+    if pressed[0]:
+        pos = pygame.mouse.get_pos()
 
+        if sp is None:
+            sp = pos
+
+        width = pos[0] - sp[0]
+        height = pos[1] - sp[1]
+
+        sc. fill(WHITE)
+        pygame.draw.rect(sc, RED, (sp[0], sp[1], width, height))
     pygame.display.flip()
+    pygame.draw.rect(sc, BLUE, (x, y, 10, 20))
 
     clock.tick(FPS)
