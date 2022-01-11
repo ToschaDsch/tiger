@@ -39,7 +39,7 @@ pygame.draw.ellipse(sc, RED, (300, 300, 100, 50), 1)
 pygame.draw.arc(sc, RED, (450, 30, 50, 150), PI, 2+PI, 5)
 """
 x = W // 2
-y = H //2
+y = H // 2
 speed = 5
 
 sp = None
@@ -65,6 +65,9 @@ while True:  # the main cycle
             elif event.key == pygame.K_RIGHT:
                 x += speed
         '''
+    sc.fill(WHITE)
+    pygame.draw.rect(sc, BLUE, (x, y, 10, 20))
+
     pressed = pygame.mouse.get_pressed()
     if pressed[0]:
         pos = pygame.mouse.get_pos()
@@ -75,9 +78,11 @@ while True:  # the main cycle
         width = pos[0] - sp[0]
         height = pos[1] - sp[1]
 
-        sc. fill(WHITE)
         pygame.draw.rect(sc, RED, (sp[0], sp[1], width, height))
+        pygame.display.flip()
+    else:
+        sp = None
+
     pygame.display.flip()
-    pygame.draw.rect(sc, BLUE, (x, y, 10, 20))
 
     clock.tick(FPS)
