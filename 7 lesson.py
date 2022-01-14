@@ -24,7 +24,8 @@ FPS = 60  # FPS
 PI = 3.14
 
 speed = 5
-
+cross_surf = pygame.image.load("cross.bmp").set_colorkey((255, 255, 255))
+cross_rect = cross_surf.get_rect(center=(200, 400))
 bg_surf = pygame.image.load("wood.bmp")
 car_surf = pygame.image.load("tiger.bmp")
 car_surf.set_colorkey((255, 255, 255))
@@ -62,7 +63,7 @@ flag = 0
 while True:  # the main cycle
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            exit()
+            pygame.quit()
         elif event.type == pygame.USEREVENT and flag == 1:
             create_ball(balls)
         elif event.type == pygame.KEYDOWN:
@@ -78,8 +79,8 @@ while True:  # the main cycle
     elif bt[pygame.K_RIGHT]:
         car = car_right
         car_rect.x += speed
-        if car_rect.x > W - car_rect.width:
-            car_rect.x = W - car_rect.width
+        if car_rect.x > W - car_rect.height:
+            car_rect.x = W - car_rect.height
     elif bt[pygame.K_UP]:
         car = car_up
         car_rect.y -= speed
@@ -88,9 +89,10 @@ while True:  # the main cycle
     elif bt[pygame.K_DOWN]:
         car = car_down
         car_rect.y += speed
-        if car_rect.y > H - car_rect.width:
-            car_rect.y = H - car_rect.width
+        if car_rect.y > H - car_rect.width/2:
+            car_rect.y = H - car_rect.width/2
     sc.blit(bg_surf, (0, 0))
+    sc.blit(cross_surf, cross_rect)
     sc.blit(car, car_rect)
     balls.draw(sc)
     balls.update(H)
