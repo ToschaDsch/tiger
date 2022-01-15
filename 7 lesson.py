@@ -1,6 +1,7 @@
 import pygame
 from random import randint
 from ball import Ball
+import sys
 
 pygame.init()
 
@@ -24,9 +25,17 @@ FPS = 60  # FPS
 PI = 3.14
 
 speed = 5
-cross_surf = pygame.image.load("cross.bmp").set_colorkey((255, 255, 255))
-cross_rect = cross_surf.get_rect(center=(200, 400))
+cross_surf = pygame.image.load("cross.bmp")
+cross_rect = cross_surf.get_rect(center=(150, 350))
+cross_surf.set_colorkey((181, 230, 29))
+
+light_surf = pygame.image.load("light2.bmp")
+light_surf.set_alpha(150)
+light_rect = light_surf.get_rect()
+
 bg_surf = pygame.image.load("wood.bmp")
+W2 = bg_surf.get_width()
+H2 = bg_surf.get_height()
 car_surf = pygame.image.load("tiger.bmp")
 car_surf.set_colorkey((255, 255, 255))
 car_surf = pygame.transform.scale(car_surf, (car_surf.get_width() // 2, car_surf.get_height() // 2))
@@ -59,11 +68,13 @@ car = car_left
 balls = pygame.sprite.Group()
 
 flag = 0
-
+x2 = 0
+y2 = 0
 while True:  # the main cycle
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit(0)
         elif event.type == pygame.USEREVENT and flag == 1:
             create_ball(balls)
         elif event.type == pygame.KEYDOWN:
@@ -73,14 +84,20 @@ while True:  # the main cycle
     bt = pygame.key.get_pressed()
     if bt[pygame.K_LEFT]:
         car = car_left
-        car_rect.x -= speed
-        if car_rect.x < 0:
-            car_rect.x = 0
+        if car_rect.x > 3/8*W - car_rect.width:
+            car_rect.x -= speed
+        elif car_rect.x + x2 + car_rect.width > 230:
+            x2 -= speed
+        else:
+            car_rect.x = 3/8*W - car_rect.width
     elif bt[pygame.K_RIGHT]:
         car = car_right
-        car_rect.x += speed
-        if car_rect.x > W - car_rect.height:
-            car_rect.x = W - car_rect.height
+        if car_rect.x < 5/8*W:
+            car_rect.x += speed
+        elif car_rect.x + x2 < W2 - 230:
+            x2 += speed
+        else:
+            car_rect.x = 5/8*W
     elif bt[pygame.K_UP]:
         car = car_up
         car_rect.y -= speed
@@ -91,9 +108,12 @@ while True:  # the main cycle
         car_rect.y += speed
         if car_rect.y > H - car_rect.width/2:
             car_rect.y = H - car_rect.width/2
-    sc.blit(bg_surf, (0, 0))
-    sc.blit(cross_surf, cross_rect)
+    sc.blit(bg_surf, (-x2, 0))
+    bg_surf.blit(cross_surf, cross_rect)
     sc.blit(car, car_rect)
+
+    if pygame.Rect.colliderect(car_rect, cross_rect):
+        sc.blit(light_surf, (-230, -100))
     balls.draw(sc)
     balls.update(H)
     pygame.display.update()
