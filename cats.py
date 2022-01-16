@@ -9,17 +9,20 @@ class Cats(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = surf
         self.rect = self.image.get_rect(center=(x, y))
-        self.direction = direction
+        self.__direction = direction
         self.speed = speed
         self.add(group)
 
     def update(self, w1, h1, dx, dy, x0, y0) -> None:
-        kx = sin(self.direction*pi)
-        ky = cos(self.direction*pi)
-        if self.rect.y + y0 - 100 > h1 or self.rect.y + y0 < 300 or self.rect.x + x0 > w1 or self.rect.x + x0 - 100 < 300:
-            self.speed = - self.speed
-        self.rect.y += self.speed * kx - dy
-        self.rect.x += self.speed * ky - dx
+        if self.rect.y + y0 < 0 or self.rect.y + y0 > h1 - self.rect.height or \
+                self.rect.x + x0 < 0 or self.rect.x + x0 + 0 > w1 - self.rect.width:
+            self.__direction = (self.__direction + 90) % 360
+        self.rect.y += int(self.speed * sin(self.__direction*pi/180)) - dy
+        self.rect.x += int(self.speed * cos(self.__direction*pi/180)) - dx
+
+    def set_direction(self):
+        return self.__direction
+
 
     def update2(self, direction) -> None:
-        self.direction = direction
+        self.__direction = direction

@@ -49,6 +49,7 @@ cats_images = ["cat1.bmp", "cat2.bmp", "cat3.bmp", "cat4.bmp", "cat5.bmp", "cat6
 cats_surf = [pygame.image.load(path) for path in cats_images]
 for i in range(len(cats_surf)):
     cats_surf[i].set_colorkey((181, 230, 29))
+    cats_surf[i] = pygame.transform.scale(cats_surf[i], (100, 100))
 
 balls_images = ["snow1.bmp", "snow2.bmp", "snow3.bmp", "snow4.bmp"]
 balls_surf = [pygame.image.load(path) for path in balls_images]
@@ -71,7 +72,7 @@ cats_a = [Cats]*len(cats_surf)
 for surf_i in cats_surf:
     x = randint(200, W2-200)
     y = randint(150, H2-150)
-    dir = random()
+    dir = randint(0, 360)
     speed_c = randint(1, 5)
     cats_a[ii] = Cats(x, y, dir, speed_c, surf_i, cats)
     ii += 1
@@ -105,7 +106,7 @@ while True:  # the main cycle
             if flag == 1:
                 create_ball(balls)
             nom = randint(0, len(cats_surf) - 1)
-            dir_n = random()
+            dir_n = randint(0, 360)
             cats_a[nom].update2(dir_n)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
