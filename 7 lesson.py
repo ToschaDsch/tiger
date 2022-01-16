@@ -3,7 +3,7 @@ from random import randint
 from random import random
 from ball import Ball
 from cats import Cats
-
+from caterpillar import Caterpillar
 import sys
 
 pygame.init()
@@ -44,6 +44,14 @@ car_surf.set_colorkey((255, 255, 255))
 car_surf = pygame.transform.scale(car_surf, (car_surf.get_width() // 2, car_surf.get_height() // 2))
 car_rect = car_surf.get_rect(center=(W // 2, H // 2))
 
+cater_images = ["circle1.bmp", "circle2.bmp"]
+cater_surf = [pygame.image.load(path) for path in cater_images]
+for i in range(len(cater_surf)):
+    cater_surf[i].set_colorkey((255, 255, 255))
+    cater_surf[i] = pygame.transform.scale(cater_surf[i], (20, 20))
+katia = [] * len(cater_surf)
+for i in range(len(cater_surf)):
+    katia.append(Caterpillar(5 + i * 4, 15 + i * 2, 200 + i * 10, 200 + i * 60, 30 + 10 * i, 0, cater_surf[i]))
 
 cats_images = ["cat1.bmp", "cat2.bmp", "cat3.bmp", "cat4.bmp", "cat5.bmp", "cat6.bmp"]
 cats_surf = [pygame.image.load(path) for path in cats_images]
@@ -159,6 +167,10 @@ while True:  # the main cycle
     cross_rect.x -= dx
     cross_rect.y -= dy
     sc.blit(cross_surf, (cross_rect.x, cross_rect.y))
+
+    for i in range(len(cater_surf)):
+        katia[i].update(W2, H2, dx, dy, x2, y2)
+        katia[i].draw(sc)
 
     if pygame.Rect.colliderect(car_rect, cross_rect):
         sc.blit(light_surf, (-230, -100 - y2))

@@ -16,7 +16,7 @@ class Cats(pygame.sprite.Sprite):
     def update(self, w1, h1, dx, dy, x0, y0) -> None:
         if self.rect.y + y0 < 0 or self.rect.y + y0 > h1 - self.rect.height or \
                 self.rect.x + x0 < 0 or self.rect.x + x0 + 0 > w1 - self.rect.width:
-            self.__direction = (self.__direction + 90) % 360
+            self.__direction = (self.__direction + 180) % 360
         self.rect.y += int(self.speed * sin(self.__direction*pi/180)) - dy
         self.rect.x += int(self.speed * cos(self.__direction*pi/180)) - dx
 
