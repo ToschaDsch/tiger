@@ -129,3 +129,10 @@ class Caterpillar(pygame.sprite.Sprite):
 
             x, y = self.turn_it()
             self.draw1(surf)
+
+    def collide(self, car_rect, score, flag_score):
+        if pygame.Rect.colliderect(car_rect, self.rect):
+            score += self.r
+            self.kill()
+            flag_score = 5
+        return score, flag_score

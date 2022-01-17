@@ -20,9 +20,5 @@ class Cats(pygame.sprite.Sprite):
         self.rect.y += int(self.speed * sin(self.__direction*pi/180)) - dy
         self.rect.x += int(self.speed * cos(self.__direction*pi/180)) - dx
 
-    def set_direction(self):
-        return self.__direction
-
-
-    def update2(self, direction) -> None:
+    def redirection(self, direction) -> None:
         self.__direction = direction
