@@ -84,6 +84,29 @@ def create_caters(group):  # the function make a caterpillar
                                                  (1 * radius, 1 * radius)), caters)  # group
 
 
+# there are butterflies
+butt_corps_images = ["butt1.bmp", "butt2.bmp"]
+butt_wings_images = ["butt1_wings.bmp", "butt1_wings.bmp"]
+butter_corps_surf = [pygame.image.load(path) for path in butt_corps_images]
+butter_wings_surf = [pygame.image.load(path) for path in butt_wings_images]
+for i in range(len(butter_corps_surf)):
+    butter_corps_surf[i].set_colorkey((181, 230, 29))  # clean away background
+    butter_wings_surf[i].set_colorkey((181, 230, 29))  # clean away background
+
+
+def create_butterfly(group):  # the function make a butterfly
+    index = randint(0, len(cater_images) - 1)  # choose an image
+    index2 = randint(0, 4)  # choose how much ball a caterpillar contains
+    n = nim[index2]
+    xc = randint(200, W2 - 200)  # coords for ball N0
+    yc = randint(200, H2 - 200)
+    direction1 = randint(0, 360)
+    radius = randint(10, 30)  # radius of balls
+    return Butterfly(n, radius, xc, yc, direction1,  # number of balls in a caterpillar, radius, coords + direction
+                       5, pygame.transform.scale(cater_surf[index],  # speed (I don't need it), minimization of images
+                                                 (1 * radius, 1 * radius)), caters)  # group
+
+
 # make cats
 cats_images = ["cat1.bmp", "cat2.bmp", "cat3.bmp", "cat4.bmp", "cat5.bmp", "cat6.bmp"]
 cats_surf = [pygame.image.load(path) for path in cats_images]
