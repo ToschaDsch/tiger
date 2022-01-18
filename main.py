@@ -5,6 +5,7 @@ from ball import Ball
 from cats import Cats
 from caterpillar import Caterpillar
 from hero import Hero
+from butterfly import Butterfly
 import sys
 
 pygame.init()
@@ -81,31 +82,27 @@ def create_caters(group):  # the function make a caterpillar
     radius = randint(10, 30)  # radius of balls
     return Caterpillar(n, radius, xc, yc, direction1,  # number of balls in a caterpillar, radius, coords + direction
                        5, pygame.transform.scale(cater_surf[index],  # speed (I don't need it), minimization of images
-                                                 (1 * radius, 1 * radius)), caters)  # group
+                                                 (1 * radius, 1 * radius)), group)  # group
 
 
 # there are butterflies
-butt_corps_images = ["butt1.bmp", "butt2.bmp"]
+butt_body_images = ["butt1.bmp", "butt2.bmp"]
 butt_wings_images = ["butt1_wings.bmp", "butt1_wings.bmp"]
-butter_corps_surf = [pygame.image.load(path) for path in butt_corps_images]
+butter_body_surf = [pygame.image.load(path) for path in butt_body_images]
 butter_wings_surf = [pygame.image.load(path) for path in butt_wings_images]
-for i in range(len(butter_corps_surf)):
-    butter_corps_surf[i].set_colorkey((181, 230, 29))  # clean away background
+for i in range(len(butter_body_surf)):
+    butter_body_surf[i].set_colorkey((181, 230, 29))  # clean away background
     butter_wings_surf[i].set_colorkey((181, 230, 29))  # clean away background
 
 
-def create_butterfly(group):  # the function make a butterfly
-    index = randint(0, len(cater_images) - 1)  # choose an image
-    index2 = randint(0, 4)  # choose how much ball a caterpillar contains
-    n = nim[index2]
-    xc = randint(200, W2 - 200)  # coords for ball N0
-    yc = randint(200, H2 - 200)
-    direction1 = randint(0, 360)
-    radius = randint(10, 30)  # radius of balls
-    return Butterfly(n, radius, xc, yc, direction1,  # number of balls in a caterpillar, radius, coords + direction
-                       5, pygame.transform.scale(cater_surf[index],  # speed (I don't need it), minimization of images
-                                                 (1 * radius, 1 * radius)), caters)  # group
+def create_butterfly(xb, yb, group):  # the function make a butterfly
+    index = randint(0, len(butter_body_surf) - 1)  # choose an image
+    direction_b = randint(0, 360)
+    return Butterfly(xb, yb, butter_body_surf[index], butter_wings_surf[index],  # coords + images (bodies + wings)
+                     direction_b, group)  # direction, group
 
+
+butterflies = pygame.sprite.Group()  # a group for the butterflies (sprite)
 
 # make cats
 cats_images = ["cat1.bmp", "cat2.bmp", "cat3.bmp", "cat4.bmp", "cat5.bmp", "cat6.bmp"]
@@ -186,10 +183,10 @@ while True:  # the main cycle
     dy = y2 - y0
     x0 = x2
     y0 = y2
-    sc.blit(bg_surf, (-x2, -y2))        # show the background
+    sc.blit(bg_surf, (-x2, -y2))  # show the background
     cross_rect.x -= dx
     cross_rect.y -= dy
-    sc.blit(cross_surf, (cross_rect.x, cross_rect.y))       # show the cross
+    sc.blit(cross_surf, (cross_rect.x, cross_rect.y))  # show the cross
 
     caters.update(W2, H2, dx, dy, x2, y2, sc)  # upgrade caterpillars
 
@@ -199,7 +196,7 @@ while True:  # the main cycle
     if pygame.Rect.colliderect(tiger.rect, cross_rect):  # the hero stands on the cross
         sc.blit(light_surf, (-230 - dx - x2, -100 - y2))  # light on!
 
-    for i in caters:        # collide with a caterpillar
+    for i in caters:  # collide with a caterpillar
         score, flag_score = i.collide(tiger.rect, score, flag_score)
 
     if flag_score < 0:  # show the score above
